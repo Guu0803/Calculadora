@@ -6,6 +6,7 @@
 ## Descrição
 
 Uma calculadora simples com as operações básicas e suporte a modos light e dark.
+o Design foi feito todo em Tailwind.
 
 ---
 
