@@ -56,3 +56,95 @@
     </div>
   </div>
 </template>
+<script>
+import key from "./components/button.vue";
+export default {
+  components: {
+    key,
+  },
+  data() {
+    return {
+      dark: false,
+      mathKeys: [
+        "-",
+        "+",
+        ".",
+        "/",
+        "*",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+      ],
+      equal: "Enter",
+      erase: "Backspace",
+      showOnScreen: "",
+      result: "",
+    };
+  },
+  methods: {
+    changeTheme() {
+      const theme = document.getElementsByTagName("html");
+      if (!this.dark) {
+        this.dark = true;
+        theme[0].className = "dark";
+      } else {
+        this.dark = false;
+        theme[0].className = "light";
+      }
+    },
+    keyPressed(id) {
+      if (!this.mathKeys.includes(id) && id != this.equal && id != this.erase)
+        return;
+      const btn = document.getElementById(id);
+      this.showOnDisplay(id);
+      if (this.dark) {
+        btn.style.backgroundColor = "#0c7073";
+        setTimeout(() => {
+          btn.style.backgroundColor = "#294d61";
+        }, 100);
+      } else {
+        btn.style.backgroundColor = "#03384d";
+        setTimeout(() => {
+          btn.style.backgroundColor = "#104c64";
+        }, 100);
+      }
+    },
+    showOnDisplay(key) {
+      if (this.showOnScreen.length == 66) return;
+      if (this.mathKeys.includes(key)) {
+        this.showOnScreen += key;
+      } else if (key == this.equal) {
+        let result = this.showOnScreen;
+        this.calulator(result);
+      } else if (key == this.erase && this.showOnScreen.length != 0) {
+        this.showOnScreen = this.showOnScreen.slice(0, -1);
+      }
+    },
+    calulator(value) {
+      this.showOnScreen = "";
+      this.result = eval(value);
+    },
+    clear() {
+      this.showOnScreen = "";
+      this.result = "";
+    },
+  },
+  created() {
+    window.document.addEventListener("keydown", (e) => {
+      let key = e.key;
+      if (key == " ") {
+        this.clear();
+      } else {
+        this.keyPressed(key);
+      }
+    });
+  },
+};
+</script>
